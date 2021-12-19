@@ -1,4 +1,4 @@
-import { Button, Carousel, Modal, Spin } from 'antd';
+import { Carousel, Modal, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import API from '../../API';
 import styles from './story.module.css';
@@ -44,7 +44,7 @@ const Story = () => {
           </div>
         ))}
       <Modal
-        title="Basic Modal"
+        title="Video"
         visible={isModalVisible}
         okButtonProps={{ hidden: true }}
         cancelButtonProps={{ hidden: true }}
@@ -57,10 +57,14 @@ const Story = () => {
           <video width={100} controls>
             <source src={selectVideo} type="video/mp4" />
           </video>
+          {videosData
+            .filter((item) => item.video_url !== selectVideo)
+            .map((item) => (
+              <video width={100} controls>
+                <source src={item.video_url} type="video/mp4" />
+              </video>
+            ))}
         </Carousel>
-        <br />
-        <Button>Prev</Button>
-        <Button>Next</Button>
       </Modal>
     </div>
   );
