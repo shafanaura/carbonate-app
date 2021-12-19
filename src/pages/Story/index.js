@@ -1,4 +1,5 @@
-import { Carousel, Modal, Spin } from 'antd';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { Modal, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import API from '../../API';
 import styles from './story.module.css';
@@ -9,10 +10,23 @@ const Story = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [videosData, setVideosData] = useState(null);
   const [selectVideo, setSelectVideo] = useState(null);
+  const [current, setCurrent] = useState(0);
+  const [length, setLength] = useState(0);
+
+  const nextSlide = () => {
+    setCurrent(current === length - 1 ? 0 : current + 1);
+  };
+
+  const prevSlide = () => {
+    setCurrent(current === 0 ? length - 1 : current - 1);
+  };
 
   async function getData() {
     setLoading(true);
-    await api.getVideoData().then((res) => setVideosData(res.videos));
+    await api.getVideoData().then((res) => {
+      setVideosData(res.videos);
+      setLength(res.videos.length);
+    });
     setLoading(false);
   }
 
@@ -22,6 +36,8 @@ const Story = () => {
       getData();
     };
   }, []);
+
+  if (!Array.isArray(videosData) || videosData.length <= 0) return null;
 
   return loading ? (
     <Spin />
@@ -44,6 +60,7 @@ const Story = () => {
           </div>
         ))}
       <Modal
+        width={800}
         title="Video"
         visible={isModalVisible}
         okButtonProps={{ hidden: true }}
@@ -53,7 +70,7 @@ const Story = () => {
           setSelectVideo(null);
         }}
       >
-        <Carousel dots={false} arrows>
+        {/* <Carousel dots={false} arrows>
           <video width={100} controls>
             <source src={selectVideo} type="video/mp4" />
           </video>
@@ -64,7 +81,21 @@ const Story = () => {
                 <source src={item.video_url} type="video/mp4" />
               </video>
             ))}
-        </Carousel>
+        </Carousel> */}
+        <section className={styles.slider}>
+          <RightOutlined className={styles.right_arrow} onClick={nextSlide} />
+          <LeftOutlined className={styles.left_arrow} onClick={prevSlide} />
+          {videosData &&
+            videosData.map((item, index) => {
+              return (
+                index === current && (
+                  <video width={500} controls>
+                    <source src={item.video_url} type="video/mp4" />
+                  </video>
+                )
+              );
+            })}
+        </section>
       </Modal>
     </div>
   );
