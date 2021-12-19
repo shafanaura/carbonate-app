@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.form {
+  border: 2px solid rgb(160, 160, 160);
+  padding: 1rem !important;
+  min-width: 30%;
+}
