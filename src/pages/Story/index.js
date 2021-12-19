@@ -1,5 +1,5 @@
 import { Button, Carousel, Modal, Spin } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import API from '../../API';
 import styles from './story.module.css';
 
@@ -9,14 +9,6 @@ const Story = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [videosData, setVideosData] = useState(null);
   const [selectVideo, setSelectVideo] = useState(null);
-  const vidRef = useRef(null);
-
-  const handlePlayVideo = () => {
-    vidRef.current.play();
-  };
-  const handlePauseVideo = () => {
-    vidRef.current.pause();
-  };
 
   async function getData() {
     setLoading(true);
