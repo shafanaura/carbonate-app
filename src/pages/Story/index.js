@@ -22,7 +22,7 @@ const Story = () => {
       getData();
     };
   }, []);
-
+  console.log(selectVideo);
   return loading ? (
     <Spin />
   ) : (
@@ -37,7 +37,7 @@ const Story = () => {
               width={200}
               onClick={() => {
                 setIsModalVisible(true);
-                setSelectVideo(item.video_url);
+                setSelectVideo(item);
               }}
               alt="img"
             />
@@ -53,19 +53,20 @@ const Story = () => {
           setSelectVideo(null);
         }}
       >
-        <Carousel dotPosition="top" arrows>
-          <video width={100} controls>
-            <source src={selectVideo} type="video/mp4" />
-          </video>
-          {videosData &&
-            videosData
-              .filter((item) => item.video_url !== selectVideo)
+        {selectVideo && videosData.length > 0 && (
+          <Carousel dotPosition="top" arrows>
+            <video width={100} controls>
+              <source src={selectVideo.video_url} type="video/mp4" />
+            </video>
+            {videosData
+              .filter((item) => item.video_url !== selectVideo.video_url)
               .map((item) => (
                 <video width={100} controls>
                   <source src={item.video_url} type="video/mp4" />
                 </video>
               ))}
-        </Carousel>
+          </Carousel>
+        )}
       </Modal>
     </div>
   );
